@@ -1,0 +1,58 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Student">
+
+	<insert id="insert" parameterType="com.pradeep.mybatis.model.Student">
+		INSERT INTO STUDENT (NAME, BRANCH, PERCENTAGE, PHONE, EMAIL ) VALUES
+		(#{name}, #{branch}, #{percentage}, #{phone}, #{email});
+
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			select last_insert_id() as id
+		</selectKey>
+
+	</insert>
+
+	
+
+	<select id="getAll" resultMap="result">
+		SELECT * FROM STUDENT;
+	</select>
+
+	<select id="getById" parameterType="int" resultMap="result">
+		SELECT * FROM STUDENT WHERE ID = #{id};
+	</select>
+
+	<select id="getAllMap" resultType="hashmap">
+		SELECT * FROM STUDENT WHERE ID = #{id};
+	</select>
+	<resultMap id="result" type="com.pradeep.mybatis.model.Student">
+		<result property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="branch" column="BRANCH" />
+		<result property="percentage" column="PERCENTAGE" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+	</resultMap>
+
+	<select id="getFirst" parameterType="int" resultMap="result">
+		SELECT * FROM STUDENT limit 1;
+	</select>
+	<update id="update" parameterType="com.pradeep.mybatis.model.Student">
+		UPDATE STUDENT SET NAME = #{name},
+		BRANCH = #{branch},
+		PERCENTAGE = #{percentage},
+		PHONE = #{phone},
+		EMAIL = #{email}
+		WHERE ID = #{id};
+	</update>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE from STUDENT WHERE ID = #{id};
+	</delete>
+
+	<select id="getCount" resultType="int">
+		SELECT count(*) FROM STUDENT
+	</select>
+</mapper>
